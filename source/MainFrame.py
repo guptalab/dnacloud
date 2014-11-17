@@ -1131,10 +1131,10 @@ class MyFrame(wx.Frame):
                 #self.pnl.clearDB.Bind(wx.EVT_BUTTON,self.onClear)
 
         def bindDecodeItems(self):
-		self.pnl1.butChoose.Bind(wx.EVT_BUTTON,self.onChoose)
-		self.pnl1.decodeBut.Bind(wx.EVT_BUTTON,self.decodeBut1)
-		self.pnl1.resetBut.Bind(wx.EVT_BUTTON,self.discard1)
-		self.pnl1.decodeBut1.Bind(wx.EVT_BUTTON,self.decodeBut2)
+        		self.pnl1.butChoose.Bind(wx.EVT_BUTTON,self.onChoose)
+        		self.pnl1.decodeBut.Bind(wx.EVT_BUTTON,self.decodeBut1)
+        		self.pnl1.resetBut.Bind(wx.EVT_BUTTON,self.discard1)
+        		self.pnl1.decodeBut1.Bind(wx.EVT_BUTTON,self.decodeBut2)
 
 #Splash Screen Class this is used to make the DNA Splash Screen
 class MySplashScreen(wx.SplashScreen):

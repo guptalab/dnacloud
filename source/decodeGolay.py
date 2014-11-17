@@ -281,6 +281,7 @@ def degenerateDNAString(readPath,tempPath,savePath):
 		tempString.write(dnaFile.read(CHUNK_SIZE))
 		dnaString = tempString.getvalue()
 		prevChar = dnaString[-1]
+		print dnaString
 		base3String = extraModules.DNABaseToBase3(dnaString)
 		asciiList = GolayDictionary.base3ToAscii(base3String, dnaString, '0')
 		resString  = extraModules.asciiToString(asciiList)
@@ -325,6 +326,7 @@ def degenerateDNAString(readPath,tempPath,savePath):
 		tempString.write(dnaFile.read(fileSize))
 		dnaString = tempString.getvalue()
 		prevChar = dnaString[-1]
+		print dnaString
 		base3String = extraModules.DNABaseToBase3(dnaString)
 		asciiList = GolayDictionary.base3ToAscii(base3String,dnaString,'0')
 		resString  = extraModules.asciiToString(asciiList)

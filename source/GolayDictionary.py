@@ -319,14 +319,14 @@ def base3ToAsciiWithoutError(string):
 	gc.collect()
 	return asciiList
 
-def base3ToAscii(string, dnaString, lastChar):
+def base3ToAscii(base3String, dnaString, lastChar):
 	global prevChar
 	global errorCount
 	prevChar = lastChar
 	x = getGolayTable()
 	listKeys = []
 	listVal = []
-	temp = ""
+	base3Block = ""
 	indexList = []
 	asciiList = []
 	for i in x.iterkeys():
@@ -334,16 +334,16 @@ def base3ToAscii(string, dnaString, lastChar):
 	for i in x.itervalues():
 		listVal.append(i)
 	i = 0
-	while i < len(string):
-		temp = string[i:i+11]   
-		if temp in listVal:
-			indexList.append(listVal.index(temp))
+	while i < len(base3String):
+		base3Block = base3String[i:i+11]
+		if base3Block in listVal:
+			indexList.append(listVal.index(base3Block))
 			prevChar = dnaString[i+10]
 			
 		else:
 			errorCount +=1
 			#print "No of errors : " + str(errorCount)
-			res = errorCorrection(temp,dnaString[i:i+11],prevChar)
+			res = errorCorrection(base3Block,dnaString[i:i+11],prevChar)
 			indexList.append(res)
 			if not prevChar == '0':
 				temp = extraModules.base3ToDNABaseWithChar(listVal[res],prevChar)
@@ -357,8 +357,8 @@ def base3ToAscii(string, dnaString, lastChar):
 		asciiList.append(int(listKeys[int(i)]))
 	del x
 	del listKeys
-	del listVal 
-	del temp
+	del listVal
+	del base3Block
 	del indexList
 	gc.collect()
 	return asciiList
