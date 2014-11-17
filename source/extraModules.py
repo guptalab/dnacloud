@@ -430,12 +430,16 @@ def DNABaseToBase3(num):
                 base3List.write("1")
             elif num[i] == 'C':
                 base3List.write("0")
+            else:
+                base3List.write("0")
         elif num[i-1] == "C":
             if num[i] == 'A':
                 base3List.write("2")
             elif num[i] == 'T':
                 base3List.write("1")
             elif num[i] == 'G':
+                base3List.write("0")
+            else:
                 base3List.write("0")
         elif num[i-1] == "G":
             if num[i] == 'A':
@@ -444,6 +448,8 @@ def DNABaseToBase3(num):
                 base3List.write("0")
             elif num[i] == 'C':
                 base3List.write("2")
+            else:
+                base3List.write("0")
         elif num[i-1] == "T":
             if num[i] == 'A':
                 base3List.write("0")
@@ -451,6 +457,8 @@ def DNABaseToBase3(num):
                base3List.write("1")
             elif num[i] == 'G':
                 base3List.write("2")
+            else:
+                base3List.write("0")
     #print base3List
     return base3List.getvalue()
 
