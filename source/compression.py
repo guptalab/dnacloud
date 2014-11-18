@@ -15,7 +15,7 @@ import wx
 import os
 import sys
 import time
-import Image
+from PIL import Image
 import Queue
 import threading
 import subprocess

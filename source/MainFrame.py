@@ -124,14 +124,6 @@ class MyFrame(wx.Frame):
                 helpMenu = wx.Menu()
                 socialMediaMenu = wx.Menu()
                 
-                #exportMenu = wx.Menu()
-                #exportMenu.Append(41,"Export DNA String..")
-                #exportMenu.Append(42,"Export DNA Chunks..")
-                
-                #importMenu = wx.Menu()
-                #importMenu.Append(51,"Import DNA String..")
-                #importMenu.Append(52,"Import DNA Chunks..")
-                
                 estimatorMenu = wx.Menu()
                 estimatorMenu.Append(61,"Memory Required (Data File)")
                 estimatorMenu.Append(62,"Bio-Chemical Properties (DNA File)")
@@ -1148,7 +1140,10 @@ class MySplashScreen(wx.SplashScreen):
         elif "win" in sys.platform and not 'darwin' in sys.platform:
 	  bmp = wx.Bitmap(PATH + '\..\icons\DNA.png', wx.BITMAP_TYPE_PNG)                
         wx.SplashScreen.__init__(self,bmp,wx.SPLASH_CENTER_ON_SCREEN | wx.SPLASH_TIMEOUT,SPLASH_TIMEOUT,parent)
-        self.Bind(wx.EVT_CLOSE,self.OnSplashScreenExit)
+        if "win" in sys.platform:
+                self.OnSplashScreenExit("sad")
+        else:
+                self.Bind(wx.EVT_CLOSE,self.OnSplashScreenExit)
         
 ###############################################################
 
