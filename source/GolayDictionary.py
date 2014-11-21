@@ -338,11 +338,9 @@ def base3ToAscii(base3String, dnaString, lastChar):
 		base3Block = base3String[i:i+11]
 		if base3Block in listVal:
 			indexList.append(listVal.index(base3Block))
-			prevChar = dnaString[i+10]
-			
+			prevChar = dnaString[i+10]	
 		else:
 			errorCount +=1
-			#print "No of errors : " + str(errorCount)
 			res = errorCorrection(base3Block,dnaString[i:i+11],prevChar)
 			indexList.append(res)
 			if not prevChar == '0':
@@ -355,6 +353,7 @@ def base3ToAscii(base3String, dnaString, lastChar):
 
 	for i in indexList:
 		asciiList.append(int(listKeys[int(i)]))
+	print "No of errors found : " + str(errorCount)
 	del x
 	del listKeys
 	del listVal

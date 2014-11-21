@@ -47,7 +47,7 @@ elif "linux" in sys.platform or 'darwin' in sys.platform:
 FOLDER_DISCLAIMER = "It is not mandatory for you to select default folder. If you don't then every time you save .dnac file you would be asked to save a location"
 PREF_DISCLAIMER = "Disclaimer : Please note that this details will be used to identify user of the DNA strings by Bio Companies hence these are mandatory to be filled."
 HEADER_TEXT = "Please select your workspace where you would work in. All your files(including temporary files) will be stored in this working directory, can be changed later also from preferences."
-SOFTWARE_DETAILS = "\n\n  Version 1.0\n\n  Visit us at www.guptalab.org/dnacloud\n\n  Contact us at dnacloud@guptalab.org"
+SOFTWARE_DETAILS = "\n\n  Version 2.0\n\n  Visit us at www.guptalab.org/dnacloud\n\n  Contact us at dnacloud@guptalab.org"
 
 class encodePanel(wx.Panel):
 	def __init__(self,parent):

@@ -62,13 +62,13 @@ else:
 ############################################
 FILE_EXT = '.dnac'
 SPLASH_TIMEOUT = 2000
-VERSION = "1.0"
+VERSION = "2.0"
 NAME = "DNA-CLOUD"
 OFFICIAL_WEBSITE = 'http://www.guptalab.org/dnacloud'
 PRODUCT_LINK = "http://www.guptalab.org/dnacloud/demo"
 FEEDBACK_LINK = "https://docs.google.com/forms/d/1YGu_I9z7Z56oAP1enGByBahqs-ItHbLqnBwCoJouOro/viewform"
-STATUS_BAR_MESSAGE = "(C) 2013 Gupta Lab - www.guptalab.org/dnacloud"
-ABOUT_COPYRIGHT = '(C) 2013 - All rights Reserved.'
+STATUS_BAR_MESSAGE = "(C) 2014 Gupta Lab - www.guptalab.org/dnacloud"
+ABOUT_COPYRIGHT = '(C) 2014 - All rights Reserved.'
 KEY_DEVELOPER = 'Shalin Shah'
 ICON_ARTIST = 'Foram Joshi - DNA Cloud Icon Artist'
 ICON_IDEA = 'Dixita Limbachiya - DNA Cloud Icon Idea'
@@ -80,16 +80,16 @@ QUORA_LINK = "http://www.quora.com/Dna-Cloud"
 if "linux" in sys.platform:
   ABOUT_DESCRIPTION = "This software acts as a tool to store any file (inlcuding audio, video or picture) into DNA. Currently the software uses algorithms of Goldman et.al.(Goldman, N.; Bertone, P.; Chen, S.; Dessimoz, C.; Leproust, E. M.; Sipos, B.; Birney, E. (2013). Towards practical, high-capacity, low-maintenance information storage in synthesized DNA. Nature 494 (7435): 77.80). For more information visit us at"
 
-  DETAILED_LICENSE = "(C) 2013 Manish K Gupta,Laboratory of Natural Information Processing\nDA-IICT, Gandhinagar, Gujarat 382007\nhttp://www.guptalab.org/dnacloud\nEmail: dnacloud@guptalab.org\n\nThis software is available as an open source to academic, non-profit institutions etc. under an open source license\nagreement and may be used only in accordance with the terms of the agreement.Any selling or distribution of the\nprogram or it parts,original or modified, is prohibited without a written permission from Manish K Gupta."
+  DETAILED_LICENSE = "(C) 2014 Manish K Gupta,Laboratory of Natural Information Processing\nDA-IICT, Gandhinagar, Gujarat 382007\nhttp://www.guptalab.org/dnacloud\nEmail: dnacloud@guptalab.org\n\nThis software is available as an open source to academic, non-profit institutions etc. under an open source license\nagreement and may be used only in accordance with the terms of the agreement.Any selling or distribution of the\nprogram or it parts,original or modified, is prohibited without a written permission from Manish K Gupta."
 
 elif "win" in sys.platform and not 'darwin' in sys.platform:  
   ABOUT_DESCRIPTION = "This software acts as a tool to store any file (inlcuding audio, video or picture) into DNA. Currently the software uses algorithms of Goldman et.al.\n(Goldman, N.; Bertone, P.; Chen, S.; Dessimoz, C.; Leproust, E. M.; Sipos, B.; Birney, E. (2013). Towards practical, high-capacity, low-\n-maintenance information storage in synthesized DNA. Nature 494 (7435): 7780). For more information visit us at "
   
-  DETAILED_LICENSE = "(C) 2013 Manish K Gupta,Laboratory of Natural Information Processing\nDA-IICT, Gandhinagar, Gujarat 382007\nhttp://www.guptalab.org/dnacloud\nEmail: dnacloud@guptalab.org\n\nThis software is available as an open source to academic, non-profit institutions etc. under an open source license agreement and may be used only in accordance with the terms of the agreement.\n\nAny selling or distribution of the program or its parts,original or modified, is prohibited without a written permission from Manish K Gupta."
+  DETAILED_LICENSE = "(C) 2014 Manish K Gupta,Laboratory of Natural Information Processing\nDA-IICT, Gandhinagar, Gujarat 382007\nhttp://www.guptalab.org/dnacloud\nEmail: dnacloud@guptalab.org\n\nThis software is available as an open source to academic, non-profit institutions etc. under an open source license agreement and may be used only in accordance with the terms of the agreement.\n\nAny selling or distribution of the program or its parts,original or modified, is prohibited without a written permission from Manish K Gupta."
 elif 'darwin' in sys.platform:
   ABOUT_DESCRIPTION = "This software acts as a tool to store any file (inlcuding audio, video or picture) into DNA. \nCurrently the software uses algorithms of Goldman et.al.(Goldman, N.; Bertone, P.; Chen, S.; \nDessimoz, C.; Leproust, E. M.; Sipos, B.; Birney, E. (2013). Towards practical, high-capacity,\nlow-maintenance information storage in synthesized DNA. Nature 494 (7435): 77.80). \nFor more information visit us at"
 
-  DETAILED_LICENSE = "(C) 2013 Manish K Gupta,Laboratory of Natural Information Processing\nDA-IICT, Gandhinagar, Gujarat 382007\nhttp://www.guptalab.org/dnacloud\nEmail: dnacloud@guptalab.org\n\nThis software is available as an open source to academic, non-profit institutions etc. under an open source license\nagreement and may be used only in accordance with the terms of the agreement.Any selling or distribution of the\nprogram or it parts,original or modified, is prohibited without a written permission from Manish K Gupta."
+  DETAILED_LICENSE = "(C) 2014 Manish K Gupta,Laboratory of Natural Information Processing\nDA-IICT, Gandhinagar, Gujarat 382007\nhttp://www.guptalab.org/dnacloud\nEmail: dnacloud@guptalab.org\n\nThis software is available as an open source to academic, non-profit institutions etc. under an open source license\nagreement and may be used only in accordance with the terms of the agreement.Any selling or distribution of the\nprogram or it parts,original or modified, is prohibited without a written permission from Manish K Gupta."
 
 #############################################
 
