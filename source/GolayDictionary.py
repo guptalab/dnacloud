@@ -17,7 +17,7 @@ import extraModules
 prevChar = ''
 errorCount = 0
 
-def getGolayTable():
+def getGolayTable( blockSize ):
 
 	golayDict9 = { "0" : "000000000" ,
 						"85" : "000110110" ,
@@ -1824,10 +1824,25 @@ def getGolayTable():
 						"59" : "11101021211022121101211012" ,
 						"236" : "11102211112020012022220010" 
 						}
-	return golayDict11
+	if blockSize == 9:
+		return golayDict9
+	elif blockSize == 11:
+		return golayDict11
+	elif blockSize == 15:
+		return golayDict15
+	elif blockSize == 18:
+		return golayDict18
+	elif blockSize == 21:
+		return golayDict21
+	elif blockSize == 24:
+		return golayDict24
+	elif blockSize == 26:
+		return golayDict26
+	else:
+		return golayDict11
 
-def stringToBase3(asciiVal):
-    dictx = getGolayTable()
+def stringToBase3(asciiVal, blockSize):
+    dictx = getGolayTable( blockSize )
     #asciiVal = extraModules.stringToAscii(string)
     listx = []
     for i in asciiVal:
@@ -1838,8 +1853,8 @@ def stringToBase3(asciiVal):
     temp = ''.join(listx)
     return temp
 
-def base3ToAsciiWithoutError(string):
-	x = getGolayTable()
+def base3ToAsciiWithoutError(string, blockSize):
+	x = getGolayTable( blockSize )
 	listKeys = []
 	listVal = []
 	temp = ""
@@ -1851,12 +1866,12 @@ def base3ToAsciiWithoutError(string):
 		listVal.append(i)
 	i = 0
 	while i < len(string):
-		temp = string[i:i+11]   
+		temp = string[ i : i + blockSize]   
 		if temp in listVal:
 			indexList.append(listVal.index(temp))
-			i = i + 11
+			i = i + blockSize
 		else:
-			i = i + 11
+			i = i + blockSize
 
 	for i in indexList:
 		asciiList.append(int(listKeys[int(i)]))
@@ -1868,11 +1883,11 @@ def base3ToAsciiWithoutError(string):
 	gc.collect()
 	return asciiList
 
-def base3ToAscii(base3String, dnaString, lastChar):
+def base3ToAscii(base3String, dnaString, lastChar, blockSize):
 	global prevChar
 	global errorCount
 	prevChar = lastChar
-	x = getGolayTable()
+	x = getGolayTable( blockSize )
 	listKeys = []
 	listVal = []
 	base3Block = ""
@@ -1884,13 +1899,13 @@ def base3ToAscii(base3String, dnaString, lastChar):
 		listVal.append(i)
 	i = 0
 	while i < len(base3String):
-		base3Block = base3String[i:i+11]
+		base3Block = base3String[ i : i + blockSize]
 		if base3Block in listVal:
 			indexList.append(listVal.index(base3Block))
-			prevChar = dnaString[i+10]	
+			prevChar = dnaString[ i + blockSize - 1]	
 		else:
-			errorCount +=1
-			res = errorCorrection(base3Block,dnaString[i:i+11],prevChar)
+			errorCount += 1
+			res = errorCorrection(base3Block, dnaString[ i : i + blockSize ], prevChar, blockSize)
 			indexList.append(res)
 			if not prevChar == '0':
 				temp = extraModules.base3ToDNABaseWithChar(listVal[res],prevChar)
@@ -1898,7 +1913,7 @@ def base3ToAscii(base3String, dnaString, lastChar):
 				temp = extraModules.base3ToDNABase(listVal[res])
 			prevChar = temp[-1]
 		
-		i = i + 11
+		i = i + blockSize
 
 	for i in indexList:
 		asciiList.append(int(listKeys[int(i)]))
@@ -1911,15 +1926,34 @@ def base3ToAscii(base3String, dnaString, lastChar):
 	gc.collect()
 	return asciiList
 
-def errorCorrection(base3String, dnaString, lastChar):
-	x = getGolayTable()
+def errorCorrection(base3String, dnaString, lastChar, blockSize):
+	x = getGolayTable( blockSize )
 	listVal = []
 	for i in x.itervalues():
 		listVal.append(i)
 	resList = []
+	
+	minDCheck = 0
+	if blockSize == 9:
+		minDCheck = 2
+	elif blockSize == 11:
+		minDCheck = 4
+	elif blockSize == 15:
+		minDCheck = 6
+	elif blockSize == 18:
+		minDCheck = 8
+	elif blockSize == 21:
+		minDCheck = 10
+	elif blockSize == 24:
+		minDCheck = 12
+	elif blockSize == 26:
+		minDCheck = 14
+	else:
+		minDCheck = 4
+
 	for i in listVal:
 		dist = hammingDistanceCodewords(base3String,i)
-		if dist <= 4:
+		if dist <= minDCheck:
 			resList.append(i)
 	listDna = []
 	if not lastChar == '0':

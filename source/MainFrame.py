@@ -437,6 +437,9 @@ class MyFrame(wx.Frame):
 #This are the save cancel button modules
 
 	def save(self,e):
+		blockSize = 18
+		self.encodingScheme = self.pnl.algoOptionsComboBox.GetCurrentSelection()
+
 		con = sqlite3.connect(PATH + '/../database/prefs.db')
 		try:
 			cur = con.cursor()
@@ -476,11 +479,12 @@ class MyFrame(wx.Frame):
 		
 		inputFilename = os.path.basename( self.path )
 		inputFilenameNoExtension = os.path.splitext( inputFilename )[0]
-		self.savePath += "_" + inputFilenameNoExtension
+		if self.encodingScheme == 0:
+			self.savePath += "_" + str(blockSize) + "_" + inputFilenameNoExtension
+		else: 
+			self.savePath += "_" + inputFilenameNoExtension
 		
 		self.compressFilePath = compression.compressedFilePath( self.path, workspacePath, self.pnl.compOptionsComboBox.GetCurrentSelection() )
-		
-		self.encodingScheme = self.pnl.algoOptionsComboBox.GetCurrentSelection()
 		
 		# compression thread is called only if compression is possible
 		if self.compressFilePath:
@@ -521,12 +525,12 @@ class MyFrame(wx.Frame):
 		
 		if 'darwin' in sys.platform:
 			if self.encodingScheme == 0:
-				encodingThread = threading.Thread(name = "encode", target = encodeGolay.encode, args = ( self.readPath , self.savePath, ))
+				encodingThread = threading.Thread(name = "encode", target = encodeGolay.encode, args = ( self.readPath , self.savePath, blockSize, ))
 			else:
 				encodingThread = threading.Thread(name = "encode", target = encode.encode, args = ( self.readPath, self.savePath, ))
 		else:
 			if self.encodingScheme == 0:
-				encodingThread = multiprocessing.Process(target = encodeGolay.encode , args = ( self.readPath , self.savePath, ) , name = "Encode Process")
+				encodingThread = multiprocessing.Process(target = encodeGolay.encode , args = ( self.readPath , self.savePath, blockSize, ) , name = "Encode Process")
 			else:
 				encodingThread = multiprocessing.Process(target = encode.encode , args = ( self.readPath, self.savePath, ) , name = "Encode Process")
 		
@@ -644,7 +648,8 @@ class MyFrame(wx.Frame):
 
 #This method is called whenever we have a DNA String to be decoded 
 	def decodeBut2(self,e):
-                con = sqlite3.connect(PATH + '/../database/prefs.db')
+		blockSize = 18
+		con = sqlite3.connect(PATH + '/../database/prefs.db')
 		try:
 			cur = con.cursor()
                         string = (cur.execute('SELECT * FROM prefs where id = 8').fetchone())[1]
@@ -673,12 +678,12 @@ class MyFrame(wx.Frame):
 			self.decodingScheme = self.pnl1.algoDecodeOptionsComboBox.GetCurrentSelection()
 			if 'darwin' in sys.platform:
 				if self.decodingScheme == 0:
-					decodingThread = threading.Thread(name = "Decode", target = decodeGolay.decode, args = ( self.path , self.savePath, ))
+					decodingThread = threading.Thread(name = "Decode", target = decodeGolay.decode, args = ( self.path , self.savePath, blockSize, ))
 				else:
 					decodingThread = threading.Thread(name = "Decode", target = decode.decode, args = ( self.path , self.savePath, ))
                         else:
 				if self.decodingScheme == 0:
-					decodingThread = multiprocessing.Process(target = decodeGolay.decode , args = ( self.path , self.savePath, ) , name = "Decode Process")
+					decodingThread = multiprocessing.Process(target = decodeGolay.decode , args = ( self.path , self.savePath, blockSize, ) , name = "Decode Process")
 				else:
 					decodingThread = multiprocessing.Process(target = decode.decode , args = ( self.path , self.savePath, ) , name = "Decode Process")
         			
@@ -720,12 +725,12 @@ class MyFrame(wx.Frame):
                         
                         if 'darwin' in sys.platform:
 				if self.decodingScheme == 0:
-					decodingThread = threading.Thread(name = "Decode", target = decodeGolay.decode, args = ( self.path , self.savePath, ))
+					decodingThread = threading.Thread(name = "Decode", target = decodeGolay.decode, args = ( self.path , self.savePath, blockSize, ))
 				else:
 					decodingThread = threading.Thread(name = "Decode", target = decode.decode, args = (self.path,self.savePath,))
                         else:
 				if self.decodingScheme == 0:
-					decodingThread = multiprocessing.Process(target = decodeGolay.decode , args = ( self.path , self.savePath, ) , name = "Decode Process")
+					decodingThread = multiprocessing.Process(target = decodeGolay.decode , args = ( self.path , self.savePath, blockSize, ) , name = "Decode Process")
 				else:
 					decodingThread = multiprocessing.Process(target = decode.decode , args = ( self.path , self.savePath, ) , name = "Decode Process")
         			

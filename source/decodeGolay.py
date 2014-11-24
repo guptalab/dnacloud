@@ -26,13 +26,13 @@ import os
 import gc
 import extraModules
 
+sizeOfInfo = 0
 if hasattr(sys, "frozen"):
         PATH = os.path.dirname(sys.executable)
 else:
         PATH = os.path.dirname(os.path.abspath(__file__))
-
-
-def decode( readPath, savePath ):
+def decode( readPath, savePath, blockSize ):
+	global sizeOfInfo
 	con = sqlite3.connect(PATH + '/../database/prefs.db')
         with con:
                 cur = con.cursor()
@@ -46,12 +46,14 @@ def decode( readPath, savePath ):
 		tempFilePath = WORKSPACE_PATH + '\dnaString.txt'
 	elif "linux" in sys.platform or 'darwin' in sys.platform:
 		tempFilePath = WORKSPACE_PATH + '/dnaString.txt'
-		
-	degenerateDNAChunksInOrder(readPath,tempFilePath)
-	degenerateDNAString(readPath,tempFilePath,savePath)
+
+	sizeOfInfo = blockSize * 9
+	degenerateDNAChunksInOrder( readPath, tempFilePath)
+	degenerateDNAString( readPath, tempFilePath, savePath, blockSize)
 
 
-def degenerateDNAChunksInOrder(readPath,tempPath):
+def degenerateDNAChunksInOrder(readPath, tempPath):
+	global sizeOfInfo
 	fileOpened = open(readPath,"rb")
 	dnaStringFile = open(tempPath,"wb")
 
@@ -81,9 +83,9 @@ def degenerateDNAChunksInOrder(readPath,tempPath):
 			dnaString = StringIO()
 			for i in xrange(len(tempList)):
 				if tempList[i][0] != " ":
-					dnaString.write(tempList[i][0:99])
+					dnaString.write(tempList[i][ 0 : sizeOfInfo ])
 				else:
-					dnaString.write(tempList[i][2:101])
+					dnaString.write(tempList[i][ 2 : sizeOfInfo+2 ])
 			dnaStringFile.write(dnaString.getvalue())
 			dnaStringFile.flush()
 
@@ -105,7 +107,7 @@ def degenerateDNAChunksInOrder(readPath,tempPath):
 		tempList = dnaList[:j].split("\n")
 		dnaString = StringIO()
 		for i in xrange(len(tempList)):
-			dnaString.write(tempList[i][0:99])
+			dnaString.write(tempList[i][ 0 : sizeOfInfo])
 		dnaStringFile.write(dnaString.getvalue())
 		dnaStringFile.flush()
 
@@ -118,6 +120,7 @@ def degenerateDNAChunksInOrder(readPath,tempPath):
 		dnaStringFile.close()
 
 def degenerateDNAChunks(readPath,tempPath):
+	global sizeOfInfo
 	fileOpened = open(readPath,"rb")
 	dnaStringFile = open(tempPath,"wb")
 
@@ -158,10 +161,10 @@ def degenerateDNAChunks(readPath,tempPath):
 			tempList = (tempString + dnaList[:j]).split("\n")
 			dnaString1 = StringIO()
 			for i in xrange(len(tempList)):
-				dnaString1.write(tempList[i][0:99])
-				dnaString = tempList[i][0:99]
+				dnaString1.write(tempList[i][ 0 : sizeOfInfo ])
+				dnaString = tempList[i][ 0 : sizeOfInfo ]
 				lastChar = dnaString[-1]
-				chunkIndexDNA = tempList[i][99:-3]
+				chunkIndexDNA = tempList[i][ sizeOfInfo:-3 ]
 				chunkIndexbase3 = extraModules.DNABaseToBase3WithChar(chunkIndexDNA,lastChar)
 				chunkIndex = extraModules.base3ToDecimal(chunkIndexbase3)
 				conn.execute("INSERT INTO CHUNKS (CHUNKINDEX,CHUNKVALUE) \
@@ -189,10 +192,10 @@ def degenerateDNAChunks(readPath,tempPath):
 		tempList = dnaList[:j].split("\n")
 		dnaString1 = StringIO()
 		for i in xrange(len(tempList)):
-			dnaString1.write(tempList[i][0:99])
-			dnaString = tempList[i][0:99]
+			dnaString1.write(tempList[i][ 0 : sizeOfInfo ])
+			dnaString = tempList[i][ 0 : sizeOfInfo ]
 			lastChar = dnaString[-1]
-			chunkIndexDNA = tempList[i][99:-3] 
+			chunkIndexDNA = tempList[i][ sizeOfInfo : -3 ] 
 			chunkIndexbase3 = extraModules.DNABaseToBase3WithChar(chunkIndexDNA,lastChar)
 			chunkIndex = extraModules.base3ToDecimal(chunkIndexbase3)
 			conn.execute("INSERT INTO CHUNKS (CHUNKINDEX,CHUNKVALUE) \
@@ -222,32 +225,33 @@ def degenerateDNAChunks(readPath,tempPath):
 	fileOpened.close()
 	dnaStringFile.close()
 
-def degenerateDNAString(readPath,tempPath,savePath):
+def degenerateDNAString(readPath, tempPath, savePath, blockSize):
+	global sizeOfInfo
 	dnaFile = open(tempPath,"rb")
 	fileSize = os.path.getsize(tempPath)
 	dnaFile.seek(0,0)
 
-	i=100
-	dnaFile.seek(fileSize - 100,0)
+	i = sizeOfInfo + 1
+	dnaFile.seek(fileSize - i,0)
 	mtemp = dnaFile.read()
-	base3String = extraModules.DNABaseToBase3WithChar(mtemp[1:100],mtemp[0])
-	asciiList = GolayDictionary.base3ToAsciiWithoutError(base3String)
+	base3String = extraModules.DNABaseToBase3WithChar(mtemp[ 1:i ],mtemp[0])
+	asciiList = GolayDictionary.base3ToAsciiWithoutError(base3String, blockSize)
 	resString  = extraModules.asciiToString(asciiList)
 
 	while ',' not in resString:
-			i=i+99
+			i = i + sizeOfInfo
 			if(fileSize > i):
 				dnaFile.seek(fileSize - i,0)
 				mtemp = dnaFile.read()
-				base3String = extraModules.DNABaseToBase3WithChar(mtemp[1:i],mtemp[0])
-				asciiList = GolayDictionary.base3ToAsciiWithoutError(base3String)
+				base3String = extraModules.DNABaseToBase3WithChar( mtemp[1:i] , mtemp[0] )
+				asciiList = GolayDictionary.base3ToAsciiWithoutError(base3String, blockSize)
 				resString  = extraModules.asciiToString(asciiList)
 			else:
 				dnaFile.seek(0,0)
 				mtemp = dnaFile.read()
-				base3String = extraModules.DNABaseToBase3(mtemp)
-				asciiList = GolayDictionary.base3ToAsciiWithoutError(base3String)
-				resString  = extraModules.asciiToString(asciiList)
+				base3String = extraModules.DNABaseToBase3( mtemp )
+				asciiList = GolayDictionary.base3ToAsciiWithoutError( base3String, blockSize )
+				resString  = extraModules.asciiToString( asciiList )
 				break;
 	
 	if "," not in resString or ":" not in resString:
@@ -269,7 +273,7 @@ def degenerateDNAString(readPath,tempPath,savePath):
 	decodedFile = file( saveFile ,'wb')
 
 
-	CHUNK_SIZE = 9900000
+	CHUNK_SIZE = sizeOfInfo * 10000
 	if (fileSize % CHUNK_SIZE) == 0:
 		if (fileSize/CHUNK_SIZE) == 0:
 			noOfFileChunks = 1
@@ -286,7 +290,7 @@ def degenerateDNAString(readPath,tempPath,savePath):
 		dnaString = tempString.getvalue()
 		prevChar = dnaString[-1]
 		base3String = extraModules.DNABaseToBase3(dnaString)
-		asciiList = GolayDictionary.base3ToAscii(base3String, dnaString, '0')
+		asciiList = GolayDictionary.base3ToAscii(base3String, dnaString, '0', blockSize)
 		resString  = extraModules.asciiToString(asciiList)
 		decodedFile.write(resString)
 		decodedFile.flush()
@@ -300,7 +304,7 @@ def degenerateDNAString(readPath,tempPath,savePath):
 			tempString.write(dnaFile.read(CHUNK_SIZE))
 			dnaString = tempString.getvalue()
 			base3String = extraModules.DNABaseToBase3WithChar(dnaString,prevChar)
-			asciiList = GolayDictionary.base3ToAscii(base3String,dnaString,prevChar)
+			asciiList = GolayDictionary.base3ToAscii(base3String, dnaString, prevChar, blockSize)
 			prevChar = dnaString[-1]
 			resString  = extraModules.asciiToString(asciiList)
 			decodedFile.write(resString)
@@ -314,7 +318,7 @@ def degenerateDNAString(readPath,tempPath,savePath):
 		tempString.write(dnaFile.read(fileSize - (noOfFileChunks - 1) * CHUNK_SIZE))
 		dnaString = tempString.getvalue()
 		base3String = extraModules.DNABaseToBase3WithChar(dnaString,prevChar)
-		asciiList = GolayDictionary.base3ToAscii(base3String,dnaString,prevChar)
+		asciiList = GolayDictionary.base3ToAscii(base3String, dnaString, prevChar, blockSize)
 		prevChar = dnaString[-1]
 		resString  = extraModules.asciiToString(asciiList)
 		decodedFile.write(resString)
@@ -330,7 +334,7 @@ def degenerateDNAString(readPath,tempPath,savePath):
 		dnaString = tempString.getvalue()
 		prevChar = dnaString[-1]
 		base3String = extraModules.DNABaseToBase3(dnaString)
-		asciiList = GolayDictionary.base3ToAscii(base3String,dnaString,'0')
+		asciiList = GolayDictionary.base3ToAscii(base3String, dnaString, '0', blockSize)
 		resString  = extraModules.asciiToString(asciiList)
 		decodedFile.write(resString)
 		decodedFile.flush()

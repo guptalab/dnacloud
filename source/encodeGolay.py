@@ -33,12 +33,13 @@ FILE_EXT = '.dnac'
 chunkIndex = 0
 noOfBits = 0
 noOfChunks = 0
+chunkInfoSize = 1
 if hasattr(sys, "frozen"):
         PATH = os.path.dirname(sys.executable)
 else:
         PATH = os.path.dirname(os.path.abspath(__file__))
 
-def encode( readPath, savePath ):
+def encode( readPath, savePath, blockSize ):
 	con = sqlite3.connect(PATH + '/../database/prefs.db')
         with con:
                 cur = con.cursor()
@@ -53,12 +54,12 @@ def encode( readPath, savePath ):
 	elif "linux" in sys.platform or 'darwin' in sys.platform:
 		tempFilePath = WORKSPACE_PATH + '/dnaString.txt'
 		
-	generateDNAString(readPath,tempFilePath)
+	generateDNAString(readPath, tempFilePath, blockSize)
 	generateDNAChunks(readPath,tempFilePath,savePath)
 
 
 
-def generateDNAString(readPath,tempPath):
+def generateDNAString(readPath, tempPath, blockSize):
 	xtemp = readPath.split(".")
 	dnaStringFile = file(tempPath, 'wb')
 	fileOpened = open(readPath,"rb")
@@ -66,6 +67,7 @@ def generateDNAString(readPath,tempPath):
 	
 	global noOfBits
 	global noOfChunks
+	global chunkInfoSize
 
 	fileOpened.seek(0,0)
 
@@ -80,9 +82,9 @@ def generateDNAString(readPath,tempPath):
 
 	if noOfFileChunks > 1:
 		tempString = StringIO()
-		tempString.write(fileOpened.read(CHUNK_SIZE))
+		tempString.write( fileOpened.read( CHUNK_SIZE ) )
 		fileInputString = tempString.getvalue()
-		base3String = GolayDictionary.stringToBase3(extraModules.stringToAscii( fileInputString ))
+		base3String = GolayDictionary.stringToBase3( extraModules.stringToAscii( fileInputString ), blockSize)
 		dnaString = extraModules.base3ToDNABase(base3String)
 		prevChar = dnaString[len(dnaString)-1]
 		dnaStringFile.write(dnaString)
@@ -110,7 +112,7 @@ def generateDNAString(readPath,tempPath):
 		tempString = StringIO()
 		tempString.write(fileOpened.read())
 		fileInputString = tempString.getvalue()
-		base3String = GolayDictionary.stringToBase3(extraModules.stringToAscii( fileInputString ))
+		base3String = GolayDictionary.stringToBase3(extraModules.stringToAscii( fileInputString ), blockSize)
 		dnaString = extraModules.base3ToDNABase(base3String)
 		prevChar = dnaString[len(dnaString)-1]
 		dnaStringFile.write(dnaString)
@@ -123,16 +125,17 @@ def generateDNAString(readPath,tempPath):
 	fileOpened.close()
 	gc.collect()
 
-	len_s1 = fileSize * 11
+	len_s1 = fileSize * blockSize
 	
-	commaBase3 = GolayDictionary.stringToBase3( extraModules.stringToAscii(",") )
-	colonBase3 = GolayDictionary.stringToBase3( extraModules.stringToAscii(":") )
-	file_ext = GolayDictionary.stringToBase3( extraModules.stringToAscii( xtemp[len(xtemp) - 1] ) )
-	s3 = GolayDictionary.stringToBase3(extraModules.stringToAscii( str(len_s1)) )
+	commaBase3 = GolayDictionary.stringToBase3( extraModules.stringToAscii(","), blockSize )
+	colonBase3 = GolayDictionary.stringToBase3( extraModules.stringToAscii(":"), blockSize )
+	file_ext = GolayDictionary.stringToBase3( extraModules.stringToAscii( xtemp[len(xtemp) - 1] ), blockSize )
+	s3 = GolayDictionary.stringToBase3(extraModules.stringToAscii( str(len_s1)), blockSize )
 	s4 = len_s1 + len(commaBase3)+len(colonBase3)+len(file_ext)+len(s3)
 	
 	s5 = ''
-	while s4%99 !=0:
+	chunkInfoSize = blockSize * 9;
+	while s4 % chunkInfoSize !=0:
 		s5+='0'
 		s4=s4+1
 
@@ -142,12 +145,12 @@ def generateDNAString(readPath,tempPath):
 	dnaStringFile.flush()
 	
 	dnaLength  = os.path.getsize(tempPath)
-	noOfChunks = dnaLength/99
+	noOfChunks = dnaLength / chunkInfoSize
 	noOfBits = int(math.ceil(math.log(noOfChunks,3)))
 
 	dnaStringFile.close()
 
-def generateDNAChunks(readPath,tempPath,savePath):
+def generateDNAChunks(readPath, tempPath, savePath):
 	xtemp = readPath.split(".")
 	dnaFile = file(savePath + "_" + "." + xtemp[len(xtemp) - 1] + FILE_EXT,'wb')
 	fileOpened = open(tempPath,"rb")
@@ -213,15 +216,16 @@ def stringToChunks(string):
 	global chunkIndex
 	global noOfBits
 	global noOfChunks
+	global chunkInfoSize
 	fileIdentifier = '01'
-	if len(string) > 99:
-		for j in xrange(0, len(string), 99):
-			dnaString = string[j:j+99]
+	if len(string) > chunkInfoSize:
+		for j in xrange(0, len(string), chunkInfoSize):
+			dnaString = string[ j : j + chunkInfoSize]
 			prevChar = dnaString[-1]
-			i3 =  str(extraModules.decimalToBase3(chunkIndex)).zfill(noOfBits)
-			parityBit = generateParityBit(i3, fileIdentifier, noOfBits)
+			i3 =  str( extraModules.decimalToBase3(chunkIndex) ).zfill( noOfBits )
+			parityBit = generateParityBit( i3, fileIdentifier, noOfBits )
 			i3 = i3 + fileIdentifier + parityBit
-			i3DnaString = extraModules.base3ToDNABaseWithChar(i3,prevChar)
+			i3DnaString = extraModules.base3ToDNABaseWithChar( i3, prevChar )
 			dnaString += i3DnaString
 			f.append(dnaString+"\n")
 			chunkIndex +=1
