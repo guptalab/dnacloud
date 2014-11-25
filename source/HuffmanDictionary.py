@@ -308,15 +308,8 @@ def base3ToAscii(string):
 				temp = string[i] + string[i+1] + string[i+2] + string[i+3] + string[i+4] + string[i+5]
 				indexList.append(listVal.index(temp))
 				i = i + 6
-			#else:
-			#	print "Infinite Loop thai gyu"
 	except IndexError:
 		return None
-	#except ValueError:
-	#	print "OKAY" , (string[0:i+1]) , i
-	#	filex = file("temp.txt","wb")
-	#	filex.write(string)
-	#	filex.close()
 
 	for i in indexList:
 		asciiList.append(int(listKeys[int(i)]))
@@ -328,15 +321,3 @@ def base3ToAscii(string):
 	del indexList
 	gc.collect()
 	return asciiList
-
-
-#filex = open("temp.txt","rb")
-#string = filex.read()
-#print len(string)
-#base3ToAscii(string)
-#print stringToBase3("1")
-#print (base3ToAscii("1221122112212222012110002011212110112221002110112102022101212012212200020201001102110112012210211111021111210022122111021000211221110210211020101220011110002112101220221001121222222201201202020001121022201000002220121000211022201221020020221220000022222202"))
-#y =extraModules.asciiToString(x)
-#print x
-#print y
-
