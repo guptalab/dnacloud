@@ -228,6 +228,10 @@ class MyFrame(wx.Frame):
                 super(MyFrame,self).Move(p)
 
                 self.prefs = False
+
+                # Show encode display	
+                self.newMenuItemEncode(True)
+
 		if "win" in sys.platform and not 'darwin'in sys.platform:
 			con = sqlite3.connect(PATH + '\..\database\prefs.db')
 		elif "linux" in sys.platform or 'darwin' in sys.platform:
@@ -280,7 +284,6 @@ class MyFrame(wx.Frame):
 			cur.execute('INSERT INTO prefs VALUES(9,"0")')
 			con.commit()
 			self.prefs = True
-
 			self.isPasswordProtected = cur.execute('SELECT * FROM prefs where id = 5').fetchone()[1]
 			if "linux" in sys.platform:
 				self.isPasswordProtected = unicodedata.normalize('NFKD', cur.execute('SELECT * FROM prefs where id = 5').fetchone()[1]).encode('ascii','ignore')
@@ -388,11 +391,17 @@ class MyFrame(wx.Frame):
 		return
 
 ############################################################################
-	def encodingTypeChanged(self, e):
+	def encodingTypeChanged( self, e):
 		if self.pnl.algoOptionsComboBox.GetCurrentSelection() == 0:
 			self.pnl.codeOptionsComboBox.Show()
 		else:
 			self.pnl.codeOptionsComboBox.Hide()
+
+	def decodingTypeChanged( self, e):
+		if self.pnl1.algoDecodeOptionsComboBox.GetCurrentSelection() == 0:
+			self.pnl1.codeDecodeOptionsComboBox.Show()
+		else:
+			self.pnl1.codeDecodeOptionsComboBox.Hide()
 
 ############################################################################
 #This are the save cancel button modules
@@ -615,7 +624,15 @@ class MyFrame(wx.Frame):
 
 #This method is called whenever we have a DNA String to be decoded 
 	def decodeBut2(self,e):
-		blockSize = 18
+		self.decodingScheme = self.pnl1.algoDecodeOptionsComboBox.GetCurrentSelection()
+		codes = [ "9", "11", "15", "18", "21", "24", "26" ]
+		
+		if self.pnl1.codeDecodeOptionsComboBox.GetValue() in codes:
+			blockSize = int( self.pnl1.codeDecodeOptionsComboBox.GetValue() )
+		else:
+			wx.MessageDialog(self, 'Please select appropriate codeword size for decoding', 'Warning!',wx.OK | wx.ICON_INFORMATION | wx.STAY_ON_TOP).ShowModal()
+			return
+
 		con = sqlite3.connect(PATH + '/../database/prefs.db')
 		try:
 			cur = con.cursor()
@@ -687,8 +704,6 @@ class MyFrame(wx.Frame):
                         terminated = False
                         xtime = datetime.now().timetuple()
                         self.savePath = string + "/decoded_"
-                        
-                        self.decodingScheme = self.pnl1.algoDecodeOptionsComboBox.GetCurrentSelection()
                         
                         if 'darwin' in sys.platform:
 				if self.decodingScheme == 0:
@@ -1087,19 +1102,17 @@ class MyFrame(wx.Frame):
 #This functions are binding the buttons whenever views are changed
 
         def bindEncodeItems(self):
-                #self.pnl.but9.Bind(wx.EVT_BUTTON,self.viewString)
-                #self.pnl.but10.Bind(wx.EVT_BUTTON,self.viewList)
-                self.pnl.butChoose.Bind(wx.EVT_BUTTON,self.onChoose)
-                self.pnl.saveBut.Bind(wx.EVT_BUTTON,self.save)
-                self.pnl.discardBut.Bind(wx.EVT_BUTTON,self.discard)
+                self.pnl.butChoose.Bind( wx.EVT_BUTTON, self.onChoose)
+                self.pnl.saveBut.Bind( wx.EVT_BUTTON, self.save)
+                self.pnl.discardBut.Bind( wx.EVT_BUTTON, self.discard)
                 self.pnl.algoOptionsComboBox.Bind( wx.EVT_COMBOBOX, self.encodingTypeChanged )
-                #self.pnl.clearDB.Bind(wx.EVT_BUTTON,self.onClear)
 
         def bindDecodeItems(self):
-        		self.pnl1.butChoose.Bind(wx.EVT_BUTTON,self.onChoose)
-        		self.pnl1.decodeBut.Bind(wx.EVT_BUTTON,self.decodeBut1)
-        		self.pnl1.resetBut.Bind(wx.EVT_BUTTON,self.discard1)
-        		self.pnl1.decodeBut1.Bind(wx.EVT_BUTTON,self.decodeBut2)
+        		self.pnl1.butChoose.Bind( wx.EVT_BUTTON, self.onChoose)
+        		self.pnl1.decodeBut.Bind( wx.EVT_BUTTON, self.decodeBut1)
+        		self.pnl1.resetBut.Bind( wx.EVT_BUTTON, self.discard1)
+        		self.pnl1.decodeBut1.Bind( wx.EVT_BUTTON, self.decodeBut2)
+        		self.pnl1.algoDecodeOptionsComboBox.Bind( wx.EVT_COMBOBOX, self.decodingTypeChanged )
 
 #Splash Screen Class this is used to make the DNA Splash Screen
 class MySplashScreen(wx.SplashScreen):
