@@ -129,15 +129,19 @@ class encodePanel(wx.Panel):
 		self.vBox1.Add(self.hBox5,flag = wx.EXPAND | wx.TOP | wx.BOTTOM , border = 5)
 
 		algoOptions = [ "Golay Encoding", "Huffman Encoding" ]
+		codeOptions = [ "9", "11", "15", "18", "21", "24", "26" ]
 		compOptions = [ "No Compression", "Lossless Compression", "Lossy Compression" ]
 		self.hBox11 = wx.BoxSizer(wx.HORIZONTAL)
 		self.algoOptionsComboBox = wx.ComboBox(self, size = wx.DefaultSize, choices = algoOptions)
 		self.algoOptionsComboBox.SetStringSelection( "Golay Encoding" )
+		self.codeOptionsComboBox = wx.ComboBox(self, size = wx.DefaultSize, choices = codeOptions)
+		self.codeOptionsComboBox.SetStringSelection( "11" )
 		self.saveBut = wx.Button(self,label = "Encode  your  File",size = (160,30))
 		self.discardBut = wx.Button(self,label = "Reset  file  Selected",size = (160,30))
 		self.compOptionsComboBox = wx.ComboBox(self, size = wx.DefaultSize, choices = compOptions)
 		self.compOptionsComboBox.SetStringSelection( "No Compression" )
 		self.hBox11.Add(self.algoOptionsComboBox, flag = wx.EXPAND | wx.LEFT ,border = 20)
+		self.hBox11.Add(self.codeOptionsComboBox, flag = wx.EXPAND | wx.LEFT ,border = 10)
 		self.hBox11.Add(self.saveBut, flag = wx.EXPAND | wx.LEFT  , border = 20)
 		self.hBox11.Add(self.discardBut, flag = wx.EXPAND | wx.LEFT ,border = 20)
 		self.hBox11.Add(self.compOptionsComboBox, flag = wx.EXPAND | wx.LEFT ,border = 20)
@@ -220,13 +224,17 @@ class decodePanel(wx.Panel):
 		self.vBox2.Add(self.hBox25,flag = wx.EXPAND | wx.TOP , border = 10)
 		
 		algoOptionsDecode = [ "Golay Decoding", "Huffman Decoding" ]
+		codeDecodeOptions = [ "9", "11", "15", "18", "21", "24", "26" ]
 		self.hBox26 = wx.BoxSizer(wx.HORIZONTAL)
 		self.butChoose = wx.Button(self , label = "Select .dnac File ",size = (160,30))
 		self.hBox26.Add(self.butChoose,flag = wx.EXPAND | wx.LEFT , border = 20)
 		self.decodeBut1 = wx.Button(self,label = "Decode selected File ",size = (160,30))
 		self.algoDecodeOptionsComboBox = wx.ComboBox(self, size = wx.DefaultSize, choices = algoOptionsDecode)
 		self.algoDecodeOptionsComboBox.SetStringSelection( "Golay Decoding" )
+		self.codeDecodeOptionsComboBox = wx.ComboBox(self, size = wx.DefaultSize, choices = codeDecodeOptions)
+		self.codeDecodeOptionsComboBox.SetStringSelection( "11" )
 		self.hBox26.Add(self.algoDecodeOptionsComboBox, flag = wx.EXPAND | wx.LEFT ,border = 20)
+		self.hBox26.Add(self.codeDecodeOptionsComboBox, flag = wx.EXPAND | wx.LEFT ,border = 20)
 		self.hBox26.Add(self.decodeBut1,flag = wx.EXPAND | wx.LEFT , border = 20)
 		self.vBox2.Add(self.hBox26,flag = wx.TOP | wx.BOTTOM, border = 15)
 

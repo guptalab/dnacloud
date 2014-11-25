@@ -110,7 +110,8 @@ class MyFrame(wx.Frame):
                 self.pnl1.Hide()
                 self.clear()
                 self.Layout()
-                
+                self.path = None
+
                 if "linux" in sys.platform or 'darwin' in sys.platform:
 			ico = wx.Icon(PATH + '/../icons/DNAicon.ico', wx.BITMAP_TYPE_ICO)
 			self.SetIcon(ico)
@@ -130,77 +131,53 @@ class MyFrame(wx.Frame):
                 
 #Add items to the menues by using the Append option after creating the item or using the builtin item                
                 fileItem1 = wx.MenuItem(fileMenu,1,"File to &DNA (Encoder)")
-                #fileItem1.SetBitmap(wx.Bitmap(PATH + '/../icons/encode.png'))
                 fileMenu.AppendItem(fileItem1)
                 fileItem2 = wx.MenuItem(fileMenu,2,"DNA to &File (Decoder)")
-                #fileItem2.SetBitmap(wx.Bitmap(PATH + '/../icons/decode.png'))
                 fileMenu.AppendItem(fileItem2)
                 subMenu = fileMenu.AppendMenu(wx.ID_ANY,'Storage E&stimator',estimatorMenu)
-                #subMenu.SetBitmap(wx.Bitmap(PATH + '/../icons/estimator.png'))
                 fileMenu.AppendSeparator()
                 fileItem7 = wx.MenuItem(fileMenu,7,"Export Generated &Barcode")
-                #fileItem7.SetBitmap(wx.Bitmap(PATH + '/../icons/barcodeMenu.png'))
                 fileMenu.AppendItem(fileItem7)     
                 fileItem4 = wx.MenuItem(fileMenu,4,"Export DNA Synthesizer File")
-                #fileItem4.SetBitmap(wx.Bitmap(PATH + '/../icons/exportDNA.png'))
                 fileMenu.AppendItem(fileItem4)
                 fileItem5 = wx.MenuItem(fileMenu,5,"Import DNA Sequencer File")
-                #fileItem5.SetBitmap(wx.Bitmap(PATH + '/../icons/importDNA.png'))
                 fileMenu.AppendItem(fileItem5)
                 fileItem8 = wx.MenuItem(fileMenu,8,"Export Details to PDF")
-                #fileItem8.SetBitmap(wx.Bitmap(PATH + '/../icons/pdf.jpg'))
                 fileMenu.AppendItem(fileItem8)
                 fileItem9 = wx.MenuItem(fileMenu,9,"Export Latex File")
-                #fileItem9.SetBitmap(wx.Bitmap(PATH + '/../icons/tex.png'))
                 fileMenu.AppendItem(fileItem9)
-                #fileMenu.AppendMenu(wx.ID_ANY,'E&xport to CSV',exportMenu)
-                #fileMenu.AppendMenu(wx.ID_ANY,'&Import from CSV',importMenu)
                 fileItem6 = wx.MenuItem(fileMenu,6,"&Clear Temporary Files")
-
-                #fileItem6.SetBitmap(wx.Bitmap(PATH + '/../icons/clearFiles.png'))
                 fileMenu.AppendItem(fileItem6)
                 fileMenu.AppendSeparator()
                 fileItem3 = wx.MenuItem(fileMenu,3,"&Exit")
-                #fileItem3.SetBitmap(wx.Bitmap(PATH + '/../icons/quit.png'))
                 fileMenu.AppendItem(fileItem3)     
                 
                 self.prefItem1 = wx.MenuItem(self.prefMenu,11,"Password Protection",kind= wx.ITEM_CHECK);    #Item check makes this pref checkable
                 self.prefMenu.AppendItem(self.prefItem1);         
                 prefItem3 = wx.MenuItem(self.prefMenu,13,"Change Password");
 
-                #prefItem3.SetBitmap(wx.Bitmap(PATH + '/../icons/changePassword.png'))
                 self.prefMenu.AppendItem(prefItem3);
                 self.prefMenu.AppendSeparator()
                 prefItem2 = wx.MenuItem(self.prefMenu,12,"User Details")
-                #prefItem2.SetBitmap(wx.Bitmap(PATH + '/../icons/userDetails.gif'))
                 self.prefMenu.AppendItem(prefItem2)
                 prefItem4 = wx.MenuItem(self.prefMenu,14,"Switch Workspace")
-                #prefItem4.SetBitmap(wx.Bitmap(PATH + '/../icons/switch.png'))
                 self.prefMenu.AppendItem(prefItem4)
 
                 helpItem2 = wx.MenuItem(helpMenu,22,"User Manual")
-                #helpItem2.SetBitmap(wx.Bitmap(PATH + '/../icons/manual.jpg'))
                 helpMenu.AppendItem(helpItem2)
                 helpItem5 = wx.MenuItem(helpMenu,25,"Product Demo")
-                #helpItem5.SetBitmap(wx.Bitmap(PATH + '/../icons/demoVideo.png'))
                 helpMenu.AppendItem(helpItem5)
                 helpItem3 = wx.MenuItem(helpMenu,23,"Product Feedback")
-                #helpItem3.SetBitmap(wx.Bitmap(PATH + '/../icons/feedback.png'))
                 helpMenu.AppendItem(helpItem3)
                 helpItem4 = wx.MenuItem(helpMenu,24,"Credits")
-                #helpItem4.SetBitmap(wx.Bitmap(PATH + '/../icons/credits.png'))
                 helpMenu.AppendItem(helpItem4)
                 helpMenu.AppendSeparator()
                 helpItem1 = wx.MenuItem(helpMenu,21,"About Us")
-                #helpItem1.SetBitmap(wx.Bitmap(PATH + '/../icons/aboutUs.png'))
                 helpMenu.AppendItem(helpItem1)
 
                 socialMediaItem1 = wx.MenuItem(socialMediaMenu,41,"Facebook")
-                #socialMediaItem1.SetBitmap(wx.Bitmap(PATH + '/../icons/facebook.bmp'))
                 socialMediaItem2 = wx.MenuItem(socialMediaMenu,42,"Twitter")
-                #socialMediaItem2.SetBitmap(wx.Bitmap(PATH + '/../icons/twitter.bmp'))
                 socialMediaItem3 = wx.MenuItem(socialMediaMenu,43,"Quora")
-                #socialMediaItem3.SetBitmap(wx.Bitmap(PATH + '/../icons/quora.bmp'))
 		socialMediaItem4 = wx.MenuItem(socialMediaMenu,44,"Youtube Channel")
                 socialMediaMenu.AppendItem(socialMediaItem1)
                 socialMediaMenu.AppendItem(socialMediaItem2)
@@ -232,10 +209,6 @@ class MyFrame(wx.Frame):
                 self.Bind(wx.EVT_MENU,self.credits,id = 24)                
                 self.Bind(wx.EVT_MENU,self.enablePassword,id = 11)                
                 self.Bind(wx.EVT_MENU,self.changePassword,id = 13)
-                #self.Bind(wx.EVT_MENU,self.exportString,id = 41)
-                #self.Bind(wx.EVT_MENU,self.exportList,id = 42)
-                #self.Bind(wx.EVT_MENU,self.importString,id = 51)
-                #self.Bind(wx.EVT_MENU,self.importList,id = 52)
                 self.Bind(wx.EVT_MENU,self.productFeedback,id = 23)
                 self.Bind(wx.EVT_MENU,self.memEstimator,id = 61)
                 self.Bind(wx.EVT_MENU,self.estimator,id = 62)
@@ -257,10 +230,8 @@ class MyFrame(wx.Frame):
                 self.prefs = False
 		if "win" in sys.platform and not 'darwin'in sys.platform:
 			con = sqlite3.connect(PATH + '\..\database\prefs.db')
-			#print "windows"
 		elif "linux" in sys.platform or 'darwin' in sys.platform:
 			con = sqlite3.connect(PATH + '/../database/prefs.db')
-			#print "unix"
 		try:
 			cur = con.cursor()
 			string = (cur.execute('SELECT * FROM prefs WHERE id = 4').fetchone())[1]
@@ -289,20 +260,13 @@ class MyFrame(wx.Frame):
 					else:
 						result.Destroy()
 						sys.exit()
-			#self.qrText = ""
-			#for i in cur.execute('SELECT * FROM prefs where id < 4'):
-			#	if "win" in sys.platform:
-			#		self.qrText = self.qrText + i[1] + "\n"
-			#	if "linux" in sys.platform:
-			#		self.qrText = self.qrText + unicodedata.normalize('NFKD', i[1]).encode('ascii','ignore') + "\n"
+
 			self.isPasswordProtected = cur.execute('SELECT * FROM prefs where id = 5').fetchone()[1]
 			if "linux" in sys.platform:
 				self.isPasswordProtected = unicodedata.normalize('NFKD', cur.execute('SELECT * FROM prefs where id = 5').fetchone()[1]).encode('ascii','ignore')
-			#for i in cur.execute('SELECT * FROM prefs'):
-			#	print i
+			
 			con.close() 
                 except sqlite3.OperationalError:
-                        #print "New prefs DB"
 			cur.execute('DROP TABLE IF EXISTS prefs')
 			cur.execute('CREATE TABLE prefs(id INT,details TEXT)') 
 			cur.execute('INSERT INTO prefs VALUES(1,"Your full Name")')
@@ -316,12 +280,7 @@ class MyFrame(wx.Frame):
 			cur.execute('INSERT INTO prefs VALUES(9,"0")')
 			con.commit()
 			self.prefs = True
-			#self.qrText = ""
-			#for i in cur.execute('SELECT * FROM prefs where id < 4'):
-			#	if "win" in sys.platform:
-			#		self.qrText = self.qrText + i[1] + "\n"
-			#	if "linux" in sys.platform:
-			#		self.qrText = self.qrText + unicodedata.normalize('NFKD', i[1]).encode('ascii','ignore') + "\n"
+
 			self.isPasswordProtected = cur.execute('SELECT * FROM prefs where id = 5').fetchone()[1]
 			if "linux" in sys.platform:
 				self.isPasswordProtected = unicodedata.normalize('NFKD', cur.execute('SELECT * FROM prefs where id = 5').fetchone()[1]).encode('ascii','ignore')
@@ -329,10 +288,6 @@ class MyFrame(wx.Frame):
                 	self.hasDefaultWorkspace = "False"
 		
 #First of all asked whether to encode or deocode so display a dialog to ask him what he wants to do
-		#self.ask =  panels.chooseDialog(None,101,"Welcome to DNA-CLOUD!")
-		#self.ask.encodeBut.Bind(wx.EVT_BUTTON,self.encode)
-		#self.ask.decodeBut.Bind(wx.EVT_BUTTON,self.decode)
-		#self.ask.ShowModal()
 
 		if self.hasDefaultWorkspace == "False":
 			panels.workspaceLauncher(None,101,"Workspace Launcher!").ShowModal()
@@ -344,7 +299,6 @@ class MyFrame(wx.Frame):
 		else:
 			self.prefMenu.Check(self.prefItem1.GetId(), False)
                  
-		#self.onUseQrcode(self.qrText) 
 
 ##################################################################
 #The password modules
@@ -434,10 +388,23 @@ class MyFrame(wx.Frame):
 		return
 
 ############################################################################
+	def encodingTypeChanged(self, e):
+		if self.pnl.algoOptionsComboBox.GetCurrentSelection() == 0:
+			self.pnl.codeOptionsComboBox.Show()
+		else:
+			self.pnl.codeOptionsComboBox.Hide()
+
+############################################################################
 #This are the save cancel button modules
 
 	def save(self,e):
-		blockSize = 18
+		codes = ["9", "11", "15", "18", "21", "24", "26"]
+		if self.pnl.codeOptionsComboBox.GetValue() in codes:
+			blockSize = int( self.pnl.codeOptionsComboBox.GetValue() )
+		else:
+			wx.MessageDialog(self, 'Please select appropriate codeword size for encoding', 'Warning!',wx.OK | wx.ICON_INFORMATION | wx.STAY_ON_TOP).ShowModal()
+			return
+
 		self.encodingScheme = self.pnl.algoOptionsComboBox.GetCurrentSelection()
 
 		con = sqlite3.connect(PATH + '/../database/prefs.db')
@@ -1125,6 +1092,7 @@ class MyFrame(wx.Frame):
                 self.pnl.butChoose.Bind(wx.EVT_BUTTON,self.onChoose)
                 self.pnl.saveBut.Bind(wx.EVT_BUTTON,self.save)
                 self.pnl.discardBut.Bind(wx.EVT_BUTTON,self.discard)
+                self.pnl.algoOptionsComboBox.Bind( wx.EVT_COMBOBOX, self.encodingTypeChanged )
                 #self.pnl.clearDB.Bind(wx.EVT_BUTTON,self.onClear)
 
         def bindDecodeItems(self):
