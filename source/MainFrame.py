@@ -378,16 +378,16 @@ class MyFrame(wx.Frame):
                         #print "Encode"
 			self.pnl.txt.WriteText(self.path)
 			self.pnl.txt5.WriteText(str(os.path.getsize(self.path)))
-			self.pnl.txt4.WriteText("117")
-			self.pnl.txt2.WriteText(str(int(5.5 * os.path.getsize(self.path))))
-			self.pnl.txt3.WriteText(str(int(5.5 * os.path.getsize(self.path))/25 - 3))
+			codingType = self.pnl.algoOptionsComboBox.GetCurrentSelection()
+			codewordSize = int( self.pnl.codeOptionsComboBox.GetValue() )
+			self.pnl.txt2.WriteText( str( extraModules.getLenghtOfDNAString( codingType, self.path, codewordSize ) ) )
+			self.pnl.txt3.WriteText( str( extraModules.getNumberOfDNAChunk( codingType, self.path, codewordSize ) ) )
+			self.pnl.txt4.WriteText( str( extraModules.getLengthOfDNAChunk( codingType, self.path, codewordSize ) ) )
 		elif self.pnl1.IsShown() and isinstance(self.path, str):
-                        #print "Decode"
 			self.clear()
 			self.pnl1.txt.WriteText(self.path)
 			self.pnl1.txt2.WriteText(str(int((os.path.getsize(self.path)/117 + 3)*25)))
 			self.pnl1.txt3.WriteText(str(int(os.path.getsize(self.path)/117)))
-
 		return
 
 ############################################################################

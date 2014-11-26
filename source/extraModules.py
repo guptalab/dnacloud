@@ -1131,3 +1131,38 @@ def exportToLatex(filePath,savePath):
 
 def getFileType( inputPath ):
 	return mimetypes.guess_type( inputPath )[0]
+
+def getLenghtOfDNAString( codingType, filePath, codewordSize ):
+    if codingType == 0:
+        size = os.path.getsize(filePath)
+        infoDNA = size * codewordSize
+        end = filePath.split(".")
+        ext = end[len(end) - 1]
+        extLen = len(ext) * codewordSize
+        seperatorSize = 2 * codewordSize
+        dnaLenSize = len( stringToAscii( str( infoDNA ) ) ) * codewordSize
+        totalSize = infoDNA + seperatorSize + extLen + dnaLenSize
+        while totalSize % ( codewordSize * 9 ) != 0:
+            totalSize += 1
+        return totalSize
+    else:
+        return int(21 * os.path.getsize(filePath))
+
+def getLengthOfDNAChunk( codingType, filePath, codewordSize ):
+    if codingType == 0:
+        stringLen = getLenghtOfDNAString( codingType, filePath, codewordSize )
+        noOfChunks = stringLen / ( codewordSize * 9 )
+        noOfBits = int(math.ceil(math.log(noOfChunks,3)))
+        totalSize = ( codewordSize * 9 ) + 2 + noOfBits + 1
+        return totalSize
+    else:
+        return 117
+
+def getNumberOfDNAChunk( codingType, filePath, codewordSize ):
+    if codingType == 0:
+        stringLen = getLenghtOfDNAString( codingType, filePath, codewordSize )
+        noOfChunks = stringLen / ( codewordSize * 9 )
+        return noOfChunks
+    else:
+        return int((21 * os.path.getsize( filePath ))/25 - 3)
+
