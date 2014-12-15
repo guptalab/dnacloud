@@ -422,6 +422,8 @@ def DNABaseToBase3(num):
         base3List.write("1")
     elif num[0] == 'T':
         base3List.write("2")
+    else:
+        base3List.write("0")
     for i in xrange(1,len(num)):
         if num[i-1] == "A":
             if num[i] == 'T':

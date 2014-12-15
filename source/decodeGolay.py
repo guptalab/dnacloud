@@ -240,18 +240,17 @@ def degenerateDNAString(readPath, tempPath, savePath, blockSize):
 
 	while ',' not in resString:
 			i = i + sizeOfInfo
-			if(fileSize > i):
+			# If selected blocksize for decoding is not the same as the blocksize used for encoding then 
+			# we wont be able to find comma and 1000 is much more than maximum 
+			# possible position of comma from end
+			if(fileSize > i and 1000 > i ):
 				dnaFile.seek(fileSize - i,0)
 				mtemp = dnaFile.read()
 				base3String = extraModules.DNABaseToBase3WithChar( mtemp[1:i] , mtemp[0] )
 				asciiList = GolayDictionary.base3ToAsciiWithoutError(base3String, blockSize)
 				resString  = extraModules.asciiToString(asciiList)
 			else:
-				dnaFile.seek(0,0)
-				mtemp = dnaFile.read()
-				base3String = extraModules.DNABaseToBase3( mtemp )
-				asciiList = GolayDictionary.base3ToAsciiWithoutError( base3String, blockSize )
-				resString  = extraModules.asciiToString( asciiList )
+				print "Selected blocksize is not same as that used while encoding the selected file"
 				break;
 	
 	if "," not in resString or ":" not in resString:
