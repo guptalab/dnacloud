@@ -65,3 +65,21 @@ Folder Info:-
  
  icons - Contains all the icons used in the software.
  
+ Create exe:-
+ ---------------------------------------------------------
+ 1) Change directory to scripts
+ 
+ 2) Copy barcode and PIL folder into source folder
+ 
+ 3) Copy DNAicon.ico file from icon folder to source folder
+ 
+ 4) Copy exe_app_converterScript.py into source folder
+ 
+ 5) run "python exe_app_converterScript.py install" command in command promt run as administrator
+ 
+ 6) change directory to newly created directory called build
+ 
+ 7) change the name of the folder (present there) to source 
+ 
+ 8) copy all the folders and files except source folder from main source code to this directory
+ 
