@@ -67,12 +67,12 @@ Folder Info:-
  
  Create exe:-
  ---------------------------------------------------------
- 1) Change directory to scripts
+ 1) Copy barcode and PIL folder into source folder
  
- 2) Copy barcode and PIL folder into source folder
+ 2) Copy DNAicon.ico file from icon folder to source folder
  
- 3) Copy DNAicon.ico file from icon folder to source folder
- 
+ 3) Change directory to scripts
+  
  4) Copy exe_app_converterScript.py into source folder
  
  5) run "python exe_app_converterScript.py install" command in command promt run as administrator
