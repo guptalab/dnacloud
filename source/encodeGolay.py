@@ -152,6 +152,7 @@ def generateDNAString(readPath, tempPath, blockSize):
 
 def generateDNAChunks(readPath, tempPath, savePath):
 	xtemp = readPath.split(".")
+	dnaListLength=0
 	dnaFile = file(savePath + "_" + "." + xtemp[len(xtemp) - 1] + FILE_EXT,'wb')
 	fileOpened = open(tempPath,"rb")
 	fileSize = os.path.getsize(tempPath)
@@ -172,6 +173,7 @@ def generateDNAChunks(readPath, tempPath, savePath):
 
 		dnaList1 = stringToChunks(dnaString)
 		dnaList = ''.join(dnaList1)
+		dnaListLength = dnaListLength+len(dnaList1)
 		dnaFile.write(dnaList)
 		dnaFile.flush()
 
@@ -185,6 +187,7 @@ def generateDNAChunks(readPath, tempPath, savePath):
 			dnaString = tempString.getvalue()
 
 			dnaList1 = stringToChunks(dnaString)
+			dnaListLength = dnaListLength+len(dnaList1)
 			dnaList = ''.join(dnaList1)
 			dnaFile.write(dnaList)
 			dnaFile.flush()
@@ -199,6 +202,7 @@ def generateDNAChunks(readPath, tempPath, savePath):
 		dnaString = tempString.getvalue()
 
 		dnaList1 = stringToChunks(dnaString)
+		dnaListLength = dnaListLength+len(dnaList1)
 		dnaList = ''.join(dnaList1)
 		dnaFile.write(dnaList)
 		dnaFile.flush()
@@ -207,6 +211,9 @@ def generateDNAChunks(readPath, tempPath, savePath):
 		del dnaString
 		del dnaList
 
+	print "Number of chunks:"+ str(dnaListLength)
+	print "Chunksize:"+ str(chunkInfoSize+noOfBits+3)
+	print "Length of the dnafile:"+ str(dnaListLength*(chunkInfoSize+noOfBits+3))
 	gc.collect()
 	fileOpened.close()  
 	dnaFile.close()

@@ -266,6 +266,10 @@ def genDNAChunks(readPath,path,WORKSPACE_PATH):
 			dnaList = extraModules.xstringToChunks(dnaString)
 			dnaListLength = dnaListLength + len(dnaList)
 			dnaList = str(dnaList)
+			print "Number of chunks:"+ str(extraModules.noOfChunks)
+			print "Chunksize:"+ str(extraModules.noOfBits+5+100)
+			print "Length of the dnafile:"+ str(dnaListLength*(100+extraModules.noOfBits+5))
+			print "Length of the dnafile (primitive method):"+ str(dnaListLength*117)
 			dnaFile.write(dnaList[1:-1])
 			dnaFile.write(",")
 			
@@ -285,6 +289,10 @@ def genDNAChunks(readPath,path,WORKSPACE_PATH):
 		
 			dnaList = extraModules.xstringToChunks(dnaString)
 			dnaListLength = dnaListLength + len(dnaList)
+			print "Number of chunks:"+ str(extraModules.noOfChunks)
+			print "Chunksize:"+ str(extraModules.noOfBits+5+100)
+			print "Length of the dnafile:"+ str(dnaListLength*(100+extraModules.noOfBits+5))
+			print "Length of the dnafile (primitive method):"+ str(dnaListLength*117)
 			dnaList = str(dnaList)
 			dnaFile.write(dnaList[1:-1])
 			dnaFile.write(",")
