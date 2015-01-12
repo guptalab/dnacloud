@@ -38,10 +38,10 @@ Build Instructions
 
 - After installing pip you should install wxpython 32 bit v2.8 using following command. Make sure you are using python of 32bit or force 64bit python interpreter to run in 32 bit mode.
 
-        sudo pip install wxpython==2.8
+	sudo pip install wxpython==2.8 or sudo apt-get install python-wxgtk3.0-dev
 
-- Lastly, you need to install Whitie's pyBarcode module which is available [here](https://bitbucket.org/whitie/python-barcode "here") .
-To install it simply download it as .zip and run  `sudo apt-get install python-setuptools` and `sudo python setup.py install`.
+- Lastly, you need to install Whitie's pyBarcode module which is available [here](https://bitbucket.org/whitie/python-barcode/get/dd1a7c7ddf05.zip "here") or [here](https://bitbucket.org/whitie/python-barcode "here") .
+To install it simply download it as .zip and run `sudo apt-get install python-setuptools` and `sudo python setup.py install` in this directory.
 
 **b) For Windows :-**
 
