@@ -9,7 +9,7 @@ DNACloud README
 
 You could report bugs and feedback at :- `dnacloud@guptalab.org`                     
 To know more you can also visit our website :- `www.guptalab.org/dnacloud`                        
-You can also find our extended paper on [Cornell's archive](arxiv.org) :- `http://arxiv.org/pdf/1310.6992v2.pdf`        
+You can also find our extended paper on [Cornell's archive](http://arxiv.org/pdf/1310.6992v2.pdf) :- `http://arxiv.org/pdf/1310.6992v2.pdf`        
 
 **(C) - 2013 Gupta Lab**
 
